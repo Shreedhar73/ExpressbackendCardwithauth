@@ -2,7 +2,7 @@ var User = require('../Models/user')
 
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
-//onst user = require('../Models/user')
+//const user = require('../Models/user')
 
 var functions =  {
     addNew : function(req, res){
@@ -46,6 +46,17 @@ var functions =  {
                     })
                 }
         })
+    },
+    getinfo: function (req, res) {
+        if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
+            var token = req.headers.authorization.split(' ')[1]
+            var decodetoken = jwt.decode(token, config.secret)
+            return res.json({success: true, msg: "Hello "  + decodetoken.name})
+        }
+        else {
+            return res.json({success: false, msg: 'No Headers'})
+        }
+        
     }
         
     
